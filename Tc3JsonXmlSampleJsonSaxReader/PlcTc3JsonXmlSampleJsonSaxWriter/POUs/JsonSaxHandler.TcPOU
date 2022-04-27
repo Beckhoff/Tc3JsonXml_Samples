@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4021.12">
+  <POU Name="JsonSaxHandler" Id="{fd22ba04-0d36-44e7-a81e-c59d3ac0f333}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'c++_compatible'}
+FUNCTION_BLOCK JsonSaxHandler IMPLEMENTS ITcJsonSaxHandler
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	(* Values from JSON - written by callback methods *)	  
+	sTimestamp 			: STRING(255);
+	Sensor1				: LREAL;
+	Sensor2				: DINT;
+	
+	(* State machine variables *)
+	eState				: E_JsonStates;
+	
+	(* Indicators if an expected property has been found in JSON *)
+	bStartObjectFound 	: BOOL;
+	bEndObjectFound		: BOOL;
+	bValuesFound 		: BOOL;
+	bTimestampFound 	: BOOL;
+	bTimestampValueFound: BOOL;
+	bSensor1Found 		: BOOL;
+	bSensor1ValueFound	: BOOL;
+	bSensor2Found 		: BOOL;
+	bSensor2ValueFound	: BOOL;
+	
+	(* Error indicators *)
+	bError				: BOOL;
+	sErrorMsg			: STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bError THEN
+	sErrorMsg := 'JSON message does not equal expected format';
+END_IF
+]]></ST>
+    </Implementation>
+    <Method Name="OnBool" Id="{13455f88-e234-4d6f-b163-c3ace2d01de9}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnBool : HRESULT
+VAR_INPUT
+	value	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnDint" Id="{24238a66-3ba2-41ea-bb1d-dec022507274}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnDint : HRESULT
+VAR_INPUT
+	value	: DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Sensor2 := value;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnEndArray" Id="{1739a2d6-6bf1-4ae8-9382-66870451d46e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnEndArray : HRESULT
+VAR_INPUT
+	elementCount	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnEndObject" Id="{885811d0-5c76-4031-96ce-48dd447f7032}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnEndObject : HRESULT
+VAR_INPUT
+	memberCount	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 100) THEN
+	bEndObjectFound := TRUE;
+	eState := 110;  
+	ELSE
+		IF (eState = 110) THEN
+			bEndObjectFound := TRUE;
+			eState := 120;
+		ELSE
+			bError := TRUE;  
+	  END_IF			
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnKey" Id="{0166f13e-7ed0-43f7-a777-b23d02f1dd47}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnKey : HRESULT
+VAR_IN_OUT CONSTANT
+	key	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ((eState = 20)AND(key = 'Values')) THEN
+	bValuesFound := TRUE;
+	eState := 30;
+	ELSE
+		IF ((eState = 40)AND(key = 'Timestamp')) THEN
+		  bTimestampFound := TRUE;
+		  eState := 50;
+		ELSE
+			IF ((eState = 60)AND(key = 'Sensor1')) THEN
+				bSensor1Found := TRUE;
+				eState := 70;
+			ELSE
+				IF ((eState = 80)AND(key = 'Sensor2')) THEN
+					bSensor2Found := TRUE;
+					eState := 90;
+				ELSE
+					bError := TRUE;
+					Onkey := S_FALSE;
+				END_IF				  
+			END_IF	  
+	  	END_IF
+END_IF
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnLint" Id="{729de20b-2d3e-4125-9187-e0252a19c186}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnLint : HRESULT
+VAR_INPUT
+	value	: LINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnLreal" Id="{e458c372-d873-4613-adb7-f607191d076c}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnLreal : HRESULT
+VAR_INPUT
+	value	: LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 70) THEN
+	bSensor1ValueFound := TRUE;
+	Sensor1 := value;
+	eState := 80;
+ELSE
+	bError := TRUE;
+	OnLreal := S_FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnNull" Id="{65642340-6997-4108-83d9-c8813a05825e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnNull : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnRawNumber" Id="{f9737890-9bac-4333-b9b2-37d74169c053}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnRawNumber : HRESULT
+VAR_IN_OUT CONSTANT
+	value	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnStartArray" Id="{655fbaa9-4596-43be-8c13-3d5daaf75b5e}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnStartArray : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnStartObject" Id="{9da87a42-4b27-47bf-b4fc-3d1a5b5e45be}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnStartObject : HRESULT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 10) THEN
+	bStartObjectFound := TRUE;
+	eState := 20;  
+	ELSE
+		IF (eState = 30) THEN
+			bStartObjectFound := TRUE;
+			eState := 40;
+		ELSE
+			bError := TRUE;  
+	  END_IF			
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnString" Id="{1c13bada-871d-4b30-bee1-08ea70607c6f}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnString : HRESULT
+VAR_IN_OUT CONSTANT
+	value	: STRING;
+END_VAR
+VAR_INPUT
+	len	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 50) THEN
+	bTimestampValueFound := TRUE;
+	sTimestamp := value;
+	eState := 60;
+ELSE
+	bError := TRUE;
+	OnString := S_FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnUdint" Id="{296ac94a-f1f7-4890-a4b8-5d9fd3b55ce6}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnUdint : HRESULT
+VAR_INPUT
+	value	: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (eState = 90) THEN
+	bSensor2ValueFound := TRUE;
+	Sensor2 := value;
+	eState := 100;
+ELSE
+	bError := TRUE;
+	OnUdint := S_FALSE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OnUlint" Id="{3d01b1c5-c02d-481b-a604-269325783bc9}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD OnUlint : HRESULT
+VAR_INPUT
+	value	: ULINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcAddRef" Id="{ed9db009-45ee-459b-bd3c-e6eebd2276ca}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcAddRef : UDINT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcQueryInterface" Id="{bf125ab6-3d6a-4df3-b162-942f3b1feb6f}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcQueryInterface : HRESULT
+VAR_INPUT
+	iid	: REFERENCE TO IID;
+	pipItf	: POINTER TO PVOID;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="TcRelease" Id="{f07919cf-792d-4887-afc7-1c9d1066ed11}">
+      <Declaration><![CDATA[{attribute 'show'}
+{attribute 'c++_compatible'}
+{attribute 'minimal_input_size' := '4'}
+{attribute 'pack_mode' := '4'}
+{warning 'add method implementation'}
+METHOD TcRelease : UDINT
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="JsonSaxHandler">
+      <LineId Id="127" Count="0" />
+      <LineId Id="129" Count="1" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnBool">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnDint">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnEndArray">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnEndObject">
+      <LineId Id="29" Count="9" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnKey">
+      <LineId Id="27" Count="1" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="44" Count="1" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="37" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnLint">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnLreal">
+      <LineId Id="21" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnNull">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnRawNumber">
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnStartArray">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnStartObject">
+      <LineId Id="8" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnString">
+      <LineId Id="27" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnUdint">
+      <LineId Id="21" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.OnUlint">
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcAddRef">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcQueryInterface">
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="JsonSaxHandler.TcRelease">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

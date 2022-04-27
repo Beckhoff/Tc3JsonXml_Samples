@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4021.12">
+  <POU Name="MAIN" Id="{b49b0a40-e0b7-411b-a0ef-9b7ce6587010}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+  	(* JSON document *)
+	fbJson 			: FB_JsonSaxReader;
+	pJsonParse		: JsonSaxHandler;
+	sJsonDoc 		: STRING(255) := '{"Values":{"Timestamp":"2017-04-04T12:42:42","Sensor1":42.42,"Sensor2":42}}';	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbJson.Parse(sJson := sJsonDoc, ipHdl := pJsonParse);]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

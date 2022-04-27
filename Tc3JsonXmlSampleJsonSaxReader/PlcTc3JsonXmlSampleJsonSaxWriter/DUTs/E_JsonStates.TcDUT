@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4021.12">
+  <DUT Name="E_JsonStates" Id="{052fd327-cf19-4c70-bc81-f585de300c05}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_JsonStates :
+(
+	JSON_STATE_ONSTARTOBJECT1 := 10,
+	JSON_STATE_ONKEY_VALUES := 20,
+	JSON_STATE_ONSTARTOBJECT2 := 30,
+	JSON_STATE_ONKEY_TIMESTAMP := 40,
+	JSON_STATE_ONSTRING := 50,
+	JSON_STATE_ONKEY_SENSOR1 := 60,
+	JSON_STATE_ONLREAL := 70,
+	JSON_STATE_ONKEY_SENSOR2 := 80,
+	JSON_STATE_ONUDINT := 90,
+	JSON_STATE_ONENDOBJECT1 := 100,
+	JSON_STATE_ONENDOBJECT2 := 110,
+	JSON_STATE_FINISH := 120
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

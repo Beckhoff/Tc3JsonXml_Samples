@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.0">
+	<Project ProjectGUID="{2E42DBDE-A5FD-4323-B99C-5334278D6634}" Target64Bit="true" ShowHideConfigurations="#x106">
+		<System>
+			<Tasks>
+				<Task Id="2" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{B0567A4C-EF44-478E-9D6D-1F76A8B373C6}" Name="PlcTc3JsonXmlSampleJsonDomReader" PrjFilePath="PlcTc3JsonXmlSampleJsonDomReader\PlcTc3JsonXmlSampleJsonDomReader.plcproj" TmcFilePath="PlcTc3JsonXmlSampleJsonDomReader\PlcTc3JsonXmlSampleJsonDomReader.tmc" ReloadTmc="true" AmsPort="851" TargetArchiveSettings="#x0003" FileArchiveSettings="#x0002" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PlcTc3JsonXmlSampleJsonDomReader\PlcTc3JsonXmlSampleJsonDomReader.tmc">
+					<Name>PlcTc3JsonXmlSampleJsonDomReader Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>

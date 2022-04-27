@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4021.12">
+  <POU Name="MAIN" Id="{88652892-e7f6-4c6b-90e1-af4abe0f72ff}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	dtTimestamp : DATE_AND_TIME := DT#2017-04-04-12:42:42;
+  	(* JSON document *)
+	fbJson 		: FB_JsonSaxWriter;
+	sJsonDoc 	: STRING(255);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbJson.StartObject();
+fbJson.AddKey('Values');
+fbJson.StartObject();
+fbJson.AddKey('Timestamp');
+fbJson.AddDateTime(dtTimestamp);
+fbJson.AddKey('Sensor1');
+fbJson.AddReal(42.42);
+fbJson.AddKey('Sensor2');
+fbJson.AddDint(42);
+fbJson.AddKey('Sensor3');
+fbJson.AddBool(TRUE);
+fbJson.EndObject();
+fbJson.EndObject();
+sJsonDoc := fbJson.GetDocument();
+fbJson.ResetDocument();]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="9" Count="2" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="12" Count="3" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="22" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4021.12">
+  <POU Name="MAIN" Id="{ecb079e9-f108-4a4a-ab17-1dc515e9a429}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	dtTimestamp : DATE_AND_TIME := DT#2017-04-04-12:42:42;
+  	(* JSON document *)
+  	fbJson			: FB_JsonSaxWriter;
+	fbJsonDataType	: FB_JsonReadWriteDataType;
+	sJsonDoc		: STRING(255); // Small JSON document, can be generated via GetDocument() for up to 255 characters
+	sJsonDoc2		: STRING(2000); // Large JSON document, can be generated via CopyDocument()
+	stValues		: ST_Values;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbJson.ResetDocument();
+fbJson.StartObject();
+fbjson.AddKeyDateTime('Timestamp', dtTimestamp);
+fbJsonDataType.AddJsonKeyValueFromSymbol(fbJson, 'Values', 'ST_Values', SIZEOF(stValues), ADR(stValues));
+fbJsonDataType.AddJsonKeyPropertiesFromSymbol(fbJson, 'MetaData', 'ST_Values', 'Unit|DisplayName');
+fbJson.EndObject();
+
+sJsonDoc := fbJson.GetDocument();
+fbJson.CopyDocument(sJsonDoc2, SIZEOF(sJsonDoc2));]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="12" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

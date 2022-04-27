@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.3">
+  <DUT Name="ST_ReceivedData" Id="{3125bf29-e483-4030-992d-221e6cd69f29}">
+    <Declaration><![CDATA[TYPE ST_ReceivedData :
+STRUCT
+	serialNumber 	: STRING(255);
+	batteryVoltage 	: STRING(255);
+	clickType		: STRING(255);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

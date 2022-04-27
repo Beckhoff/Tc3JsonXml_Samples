@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="MAIN" Id="{dbb5f769-cd7b-4fa0-a74a-7b3f53c7c8d4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbXml					: FB_XmlDomParser;
+	
+	objRoot					: SXmlNode;
+	objMachines				: SXmlNode;
+	objMachine				: SXmlNode;
+	objControllers			: SXmlNode;
+	objController			: SXmlNode;
+	
+	objAttribute			: SXmlAttribute;
+	
+	sXmlString				: STRING(1000);
+	
+	bCreate					: BOOL := FALSE;
+	bSave					: BOOL := TRUE;
+	bRemoved				: BOOL := FALSE;
+	
+	nLength						: UDINT;
+	newAttr : SXmlAttribute;
+END_VAR
+
+    ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bCreate THEN
+	(* Create an empty XML document *)
+	objRoot := fbXml.GetDocumentNode();
+       
+	(* Create a new XML node 'Machines' and add to the empty document *)
+    objMachines := fbXml.AppendNode(objRoot, 'Machines');
+	
+	(* Create a new XML node 'Machine' and add an attribute to this node. Append node to 'Machines' *)
+    objMachine := fbXml.AppendNode(objMachines, 'Machine');
+    objAttribute := fbXml.AppendAttribute(objMachine, 'Name', 'Wilde Nelli');
+    
+	(* Create a new XML node 'Controllers' and add to the 'Machine' node *)
+	objControllers := fbXml.AppendNode(objMachine, 'Controllers');
+	
+	(* Create a new XML node 'Controller' and add some attributes. Append node to 'Controllers'. *)
+    objController := fbXml.AppendChild(objControllers, 'Controller', 'CX5120', FALSE);
+    objAttribute := fbXml.AppendAttribute(objController, 'Type', 'EPC');
+    objAttribute := fbXml.AppendAttribute(objController, 'OS', 'Windows Embedded Compact 7');
+    
+	(* Create a new XML node 'Controller' and add some attributes. Append node to 'Controllers'. *)
+	objController := fbXml.AppendChild(objControllers, 'Controller', 'CX2040', FALSE);
+    objAttribute := fbXml.AppendAttribute(objController, 'Type', 'EPC');
+    objAttribute := fbXml.AppendAttribute(objController, 'OS', 'Windows Embedded Standard 7');
+    
+	(* Create a new XML node 'Controller' and add some attributes. Append node to 'Controllers'. *)
+	objController := fbXml.AppendChild(objControllers, 'Controller', 'C6015', FALSE);
+    objAttribute := fbXml.AppendAttribute(objController, 'Type', 'IPC');
+    objAttribute := fbXml.AppendAttribute(objController, 'OS', 'Windows 10 IoT Enterprise');
+    		
+	(* Create a new XML node 'Machine' and add an attribute to this node. Append node to 'Machines' *)
+    objMachine := fbXml.AppendNode(objMachines, 'Machine');
+    objAttribute := fbXml.AppendAttribute(objMachine, 'Name', 'Stanze Oscar');
+	
+	(* Create a new XML node 'Controllers' and add to the 'Machine' node *)
+    objControllers := fbXml.AppendNode(objMachine, 'Controllers');  
+	
+	(* Create a new XML node 'Controller' and add some attributes. Append node to 'Controllers'. *)
+    objController := fbXml.AppendChild(objControllers, 'Controller', 'C6017', FALSE);
+    objAttribute := fbXml.AppendAttribute(objController, 'Type', 'IPC');   
+    objAttribute := fbXml.AppendAttribute(objController, 'OS', 'Windows 10 IoT Enterprise');
+
+	newAttr := fbXml.InsertAttribute(objController, objAttribute, 'AddAttribute');
+	fbXml.SetAttribute(newAttr, 'Hola');
+  
+	(* Retrieve XML document and store in a variable of data type STRING(1000) *)
+	nLength := fbXml.CopyDocument(sXmlString, SIZEOF(sXmlString));
+
+	bCreate := FALSE;
+
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="33" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="102" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="38" Count="2" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="41" Count="3" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="45" Count="2" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="48" Count="2" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="51" Count="1" />
+      <LineId Id="109" Count="1" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="111" Count="1" />
+      <LineId Id="54" Count="2" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.3">
+  <POU Name="MAIN" Id="{d584e34a-6630-44df-b26c-54c4ec0ec00a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	(* JSON *)
+	fbJson 			: FB_JsonDomParser;
+	jsonDoc 		: SJsonValue;
+	jsonProp		: SJsonValue;
+	jsonValue		: SJsonValue;
+	bHasMember		: BOOL;
+  	sMessage 		: STRING(255) := '{"serialNumber":"G030PT028191AC4R","batteryVoltage":"1547mV","clickType":"SINGLE"}';
+	stReceivedData	: ST_ReceivedData;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Retrieve JSON content *)
+jsonDoc := fbJson.ParseDocument(sMessage);
+bHasMember := fbJson.HasMember(jsonDoc, 'serialNumber');
+IF (bHasMember) THEN
+	  bHasMember := FALSE;
+	  jsonProp := fbJson.FindMember(jsonDoc, 'serialNumber');
+	  stReceivedData.serialNumber := fbJson.GetString(jsonProp);
+END_IF
+
+bHasMember := fbJson.HasMember(jsonDoc, 'batteryVoltage');
+IF (bHasMember) THEN
+	  bHasMember := FALSE;
+	  jsonProp := fbJson.FindMember(jsonDoc, 'batteryVoltage');
+	  stReceivedData.batteryVoltage := fbJson.GetString(jsonProp);
+END_IF		
+
+bHasMember := fbJson.HasMember(jsonDoc, 'clickType');
+IF (bHasMember) THEN
+	  bHasMember := FALSE;
+	  jsonProp := fbJson.FindMember(jsonDoc, 'clickType');
+	  stReceivedData.clickType := fbJson.GetString(jsonProp);
+END_IF			
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="104" Count="21" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

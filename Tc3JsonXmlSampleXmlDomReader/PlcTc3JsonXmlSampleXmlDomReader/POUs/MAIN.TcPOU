@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="MAIN" Id="{ed120519-6aa8-4fd0-87ed-ffa0c7751332}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbXml					: FB_XmlDomParser;
+	
+	xmlDoc					: SXmlNode;
+
+	xmlMachines				: SXmlNode;
+	xmlMachine1				: SXmlNode;
+	xmlMachine2				: SXmlNode;
+	
+	xmlIterator				: SXmlIterator;
+	xmlMachineNode			: SXmlNode;
+	xmlMachineNodeValue		: STRING;		
+	
+	xmlMachine1Attribute	: SXmlAttribute;
+	xmlMachine2Attribute	: SXmlAttribute;
+	
+	sMachine1Name			: STRING;
+	sMachine2Name			: STRING;
+	
+	nMachine1Attribute		: DINT;
+	nMachine2Attribute		: DINT;
+	
+	sMessageToParse			: STRING(255) := '<Machines><Machine Type="1">Wilde Nelli</Machine><Machine Type="2">Huber8</Machine></Machines>';
+	
+	i : INT;
+END_VAR
+
+    ]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* Load XML content *)
+xmlDoc := fbXml.ParseDocument(sMessageToParse);
+
+(* Parse XML nodes - Option 1 *)
+xmlMachines := fbXml.ChildByName(xmlDoc, 'Machines');
+xmlMachine1 := fbXml.ChildByAttribute(xmlMachines, 'Type', '1');
+xmlMachine2 := fbXml.ChildByAttributeAndName(xmlMachines, 'Type', '2', 'Machine');
+
+(* Parse XML nodes - Option 2 *)
+xmlMachines := fbXml.ChildByName(xmlDoc, 'Machines');
+xmlMachineNode := fbXml.ChildrenByName(xmlMachines, xmlIterator, 'Machine');
+WHILE NOT fbXml.IsEnd(xmlIterator) DO
+	xmlMachineNode := fbXml.Node(xmlIterator);
+	xmlMachineNodeValue := fbXml.NodeText(xmlMachineNode);
+	XmlIterator := fbXml.Next(XmlIterator);
+END_WHILE
+
+(* Parse XML attributes *)
+xmlMachine1Attribute := fbXml.Attribute(xmlMachine1, 'Type');
+xmlMachine2Attribute := fbXml.Attribute(xmlMachine2, 'Type');
+
+(* Retrieve node values *)
+sMachine1Name := fbXml.NodeText(xmlMachine1);
+sMachine2Name := fbXml.NodeText(xmlMachine2);
+
+(* Retrieve attribute values *)
+nMachine1Attribute := fbXml.AttributeAsInt(xmlMachine1Attribute);
+nMachine2Attribute := fbXml.AttributeAsInt(xmlMachine2Attribute);
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="7" Count="6" />
+      <LineId Id="45" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="14" Count="11" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
