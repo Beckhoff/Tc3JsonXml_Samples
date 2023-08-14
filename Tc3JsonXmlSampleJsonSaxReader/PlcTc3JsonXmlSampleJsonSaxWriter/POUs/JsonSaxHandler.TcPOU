@@ -272,7 +272,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[IF (eState = 50) THEN
 	bTimestampValueFound := TRUE;
-	sTimestamp := value;
+	STRNCPY(pDst:=ADR(sTimestamp), pSrc:=ADR(value), nDstSize:=SIZEOF(sTimestamp));
 	eState := 60;
 ELSE
 	bError := TRUE;
