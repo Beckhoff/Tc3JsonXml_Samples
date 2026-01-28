@@ -5,31 +5,43 @@
 VAR
 	bStart			: BOOL := TRUE;
 	
-	
 	dtTimestamp : DATE_AND_TIME := DT#2017-04-04-12:42:42;
   	(* JSON document *)
   	fbJson			: FB_JsonSaxWriter;
 	fbJsonDataType	: FB_JsonReadWriteDataType;
 	sJsonDoc		: STRING(255); // Small JSON document, can be generated via GetDocument() for up to 255 characters
 	sJsonDoc2		: STRING(2000); // Large JSON document, can be generated via CopyDocument()
+	sJsonDoc3		: STRING(255); // Additional small JSON document for second sample part to not overwrite other JSON documents
 	stValues		: ST_Values;
 	stValuesRcv		: ST_Values;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bStart THEN
+	// Part 1: create JSON with metadata from structure
 	bStart := FALSE;
+	stValues.Sensor1 := 42.42;
+	stValues.Sensor2 := 50;
+	stValues.Sensor3 := 7;
 	fbJson.ResetDocument();
 	fbJson.StartObject();
 	fbjson.AddKeyDateTime('Timestamp', dtTimestamp);
+	// Adding stValues to JSON document
 	fbJsonDataType.AddJsonKeyValueFromSymbol(fbJson, 'Values', 'ST_Values', SIZEOF(stValues), ADR(stValues));
+	// Adding metadata from ST_Values datatype to JSON document
 	fbJsonDataType.AddJsonKeyPropertiesFromSymbol(fbJson, 'MetaData', 'ST_Values', 'Unit|DisplayName');
 	fbJson.EndObject();
 
 	sJsonDoc := fbJson.GetDocument();
 	fbJson.CopyDocument(sJsonDoc2, SIZEOF(sJsonDoc2));
 	
-	fbJsonDataType.SetSymbolFromJson(sJsonDoc,'ST_Values',SIZEOF(stValuesRcv), ADR(stValuesRcv));
+	// Part 2: create JSON and set PLC symbol from JSON
+	fbJson.ResetDocument();
+	// Adding stValues to JSON document
+	fbJsonDataType.AddJsonValueFromSymbol(fbJson, 'ST_Values', SIZEOF(stValues), ADR(stValues));
+	sJsonDoc3 := fbJson.GetDocument();
+	// Using JSON to set values in stValuesRcv
+	fbJsonDataType.SetSymbolFromJson(sJsonDoc3, 'ST_Values', SIZEOF(stValuesRcv), ADR(stValuesRcv));
 END_IF
 ]]></ST>
     </Implementation>

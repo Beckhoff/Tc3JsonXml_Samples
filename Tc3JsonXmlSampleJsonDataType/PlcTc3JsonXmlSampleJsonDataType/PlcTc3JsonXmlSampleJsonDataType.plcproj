@@ -6,7 +6,7 @@
     <ProjectGuid>{d5369d98-4035-46bc-931c-73cee395cb31}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <Name>PlcTc3JsonXmlSampleJsonDataType</Name>
-    <ProgramVersion>3.1.4026.17</ProgramVersion>
+    <ProgramVersion>3.1.4026.20</ProgramVersion>
     <Application>{c38afd39-639d-4d1b-a0f8-a4dccb957423}</Application>
     <TypeSystem>{652821a5-dca5-4948-8736-e8865162a979}</TypeSystem>
     <Implicit_Task_Info>{659a1214-9cf8-4b3a-bb8f-fa06fa1bcc26}</Implicit_Task_Info>

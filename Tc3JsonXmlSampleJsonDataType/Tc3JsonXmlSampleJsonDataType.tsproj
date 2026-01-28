@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.17">
-	<Project ProjectGUID="{F1E5163E-94B0-417B-83C8-0AE9222ED34F}" Target64Bit="true" ShowHideConfigurations="#x106">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.20">
+	<Project ProjectGUID="{F1E5163E-94B0-417B-83C8-0AE9222ED34F}" TargetNetId="199.4.42.250.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
-			<Settings MaxCpus="12" NonWinCpus="1" PCoreAffinity="15" ECoreAffinity="4080">
+			<Settings MaxCpus="64" NonWinCpus="53">
 				<Cpu CpuId="11"/>
 			</Settings>
 			<Tasks>
@@ -13,7 +13,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{D5369D98-4035-46BC-931C-73CEE395CB31}" Name="PlcTc3JsonXmlSampleJsonDataType" PrjFilePath="PlcTc3JsonXmlSampleJsonDataType\PlcTc3JsonXmlSampleJsonDataType.plcproj" TmcFilePath="PlcTc3JsonXmlSampleJsonDataType\PlcTc3JsonXmlSampleJsonDataType.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x0002" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1D7C62B7-AE0B-AEA8-E003-451BCCDB2E15}" TmcPath="PlcTc3JsonXmlSampleJsonDataType\PlcTc3JsonXmlSampleJsonDataType.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{071FFCD2-E866-B072-1700-C5D137B1B880}" TmcPath="PlcTc3JsonXmlSampleJsonDataType\PlcTc3JsonXmlSampleJsonDataType.tmc">
 					<Name>PlcTc3JsonXmlSampleJsonDataType Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
