@@ -6,7 +6,7 @@
     <ProjectGuid>{b0567a4c-ef44-478e-9d6d-1f76a8b373c6}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <Name>PlcTc3JsonXmlSampleJsonDomReader</Name>
-    <ProgramVersion>3.1.4021.2</ProgramVersion>
+    <ProgramVersion>3.1.4026.20</ProgramVersion>
     <Application>{24c28977-7e1f-4e9e-b3f8-17c3c16e2da2}</Application>
     <TypeSystem>{61a5592d-d6f2-4c7b-8368-ea7994ada8d8}</TypeSystem>
     <Implicit_Task_Info>{7b0292ba-e807-40d5-b66d-d21486e7bc37}</Implicit_Task_Info>

@@ -6,7 +6,7 @@
     <ProjectGuid>{17e67df2-12db-45ef-aa95-3ab7921a7400}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <Name>PlcTc3JsonXmlSampleJsonSaxWriter</Name>
-    <ProgramVersion>3.1.4021.2</ProgramVersion>
+    <ProgramVersion>3.1.4026.20</ProgramVersion>
     <Application>{c77bacef-1a46-490c-8c8f-d9abee5475ca}</Application>
     <TypeSystem>{8420505c-ecc9-490e-9578-7da771ccd2f1}</TypeSystem>
     <Implicit_Task_Info>{56ee1723-f89e-467a-b137-af776c2a5f17}</Implicit_Task_Info>
