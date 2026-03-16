@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# TcXaeShell Solution File, Format Version 11.00
+# Visual Studio 15
 VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "Tc3JsonXmlSampleXmlDomReader", "Tc3JsonXmlSampleXmlDomReader.tsproj", "{F8F0629B-2757-4526-B06F-2FE3977EC654}"
